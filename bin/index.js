@@ -78,7 +78,9 @@ fs.readdir(dirPath, (err, files) => {
           .pipe(csv())
           .on("data", (data) => {
             // console.log(data);
+            // console.log(data.TrxDate)
             data.TrxDate = new Date(data.TrxDate);
+            // console.log(data.TrxDate)
             data.TrxNo = parseInt(data.TrxNo, 10);
             data.Amount = parseInt(data.Amount, 10);
             csvDatas.push(data);
@@ -89,21 +91,21 @@ fs.readdir(dirPath, (err, files) => {
 
             if (fileReaded === files.length) {
               try {
-                // boleh pake .filter atau harus for loop manual?
+                // ----- boleh pake .filter atau harus for loop manual?
                 // const filteredDatas = csvDatas
                 //   .filter(
                 //     (data) =>
-                //       // < atau <= ?
-                //       data.TrxDate > new Date(startDate) &&
-                //       data.TrxDate < new Date(endDate)
+                //       // ----- < atau <= ?
+                //       data.TrxDate >= new Date(startDate) &&
+                //       data.TrxDate <= new Date(endDate)
                 //   )
                 //   .sort((a, b) => a.TrxDate - b.TrxDate);
 
-                let filteredDatas = [];
+                const filteredDatas = [];
                 for (let i = 0; i < csvDatas.length; i++) {
                   if (
-                    csvDatas[i].TrxDate > new Date(startDate) &&
-                    csvDatas[i].TrxDate < new Date(endDate)
+                    csvDatas[i].TrxDate >= new Date(startDate) &&
+                    csvDatas[i].TrxDate <= new Date(endDate)
                   ) {
                     filteredDatas.push(csvDatas[i]);
                   }
@@ -111,12 +113,13 @@ fs.readdir(dirPath, (err, files) => {
 
                 // console.log("filtered csv datas:", filteredDatas);
 
+                // ----- output datenya RFC-3339 yang global atau yang local indo
                 filteredDatas.forEach((singelData) => {
                   singelData.TrxDate = singelData.TrxDate.toISOString();
                 });
 
                 const outputCSV = createCsvWriter({
-                  path: "../output.csv",
+                  path: "./output.csv",
                   header: [
                     { id: "TrxNo", title: "TrxNo" },
                     { id: "TrxDate", title: "TrxDate" },

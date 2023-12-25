@@ -2,10 +2,8 @@
 This application is a CLI made with nodejs to filter several csv files in a certain directory. the column that is filtered is TrxDate which is filtered based on the start time and end time inputted by user
 
 # How to Use
-First of all, after cloning this repository, run this code with your preferred terminal in directory where package.json located
+First of all, after cloning this repository, run this code with cmd in directory where package.json located
 > npm install
-
-And then, run this code with your preferred terminal in "bin" directory where index.js located
 > npm install -g
 
 After that, you can check the program by type code below and see the instruction appear

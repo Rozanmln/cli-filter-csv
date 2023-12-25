@@ -52,14 +52,16 @@ async function addHeaderToCSV(filePath, newRow) {
   }
 }
 
-// const dirPath = "../../csv";
-// const startDate = "2023-06-06T06:52:54.000Z";
-// const endDate = "2023-07-06T06:52:54.000Z";
 const dirPath = options.dir;
 const startDate = options.start;
 const endDate = options.end;
 const csvDatas = [];
 const csvHeaders = ["TrxNo", "TrxDate", "TrxDetail", "Amount"];
+
+if (new Date(startDate) > new Date(endDate)) {
+  console.log("tanggal start harus lebih kecil daripada tanggal selesai");
+  return;
+}
 
 fs.readdir(dirPath, (err, files) => {
   if (err) {
@@ -77,10 +79,7 @@ fs.readdir(dirPath, (err, files) => {
         fs.createReadStream(filePath)
           .pipe(csv())
           .on("data", (data) => {
-            // console.log(data);
-            // console.log(data.TrxDate)
             data.TrxDate = new Date(data.TrxDate);
-            // console.log(data.TrxDate)
             data.TrxNo = parseInt(data.TrxNo, 10);
             data.Amount = parseInt(data.Amount, 10);
             csvDatas.push(data);
@@ -115,7 +114,18 @@ fs.readdir(dirPath, (err, files) => {
 
                 // ----- output datenya RFC-3339 yang global atau yang local indo
                 filteredDatas.forEach((singelData) => {
-                  singelData.TrxDate = singelData.TrxDate.toISOString();
+                  const dateBeforeFormat = new Date(
+                    singelData.TrxDate.toISOString()
+                  );
+                  const formatedDate = new Date(
+                    dateBeforeFormat.getTime() -
+                      dateBeforeFormat.getTimezoneOffset() * 60 * 1000
+                  );
+                  const formatedDateString = formatedDate
+                    .toISOString()
+                    .replace(".000Z", "+07:00");
+
+                  singelData.TrxDate = formatedDateString;
                 });
 
                 const outputCSV = createCsvWriter({

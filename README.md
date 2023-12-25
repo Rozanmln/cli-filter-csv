@@ -4,6 +4,7 @@ This application is a CLI made with nodejs to filter several csv files in a cert
 # How to Use
 First of all, after cloning this repository, run this code with cmd in directory where package.json located
 > npm install
+> 
 > npm install -g
 
 After that, you can check the program by type code below and see the instruction appear

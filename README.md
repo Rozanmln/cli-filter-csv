@@ -30,6 +30,8 @@ filter <argument1> <value1> <argument2> <value2> <argument3> <value3>
 ```
 
 Example : 
-> filter -d D:\buat_bullion\test_coding\csv -s 2023-06-27T03:21:04+07:00 -e 2023-11-17T19:24:00+07:00
+```
+filter -d D:\buat_bullion\test_coding\csv -s 2023-06-27T03:21:04+07:00 -e 2023-11-17T19:24:00+07:00
+```
 
 And Finally, you can see that the output CSV file is generated in directory where you have run the cli

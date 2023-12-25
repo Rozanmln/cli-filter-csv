@@ -25,7 +25,7 @@ Missing required arguments: d, s, e
 ```
 
 Based on that information, you must input 3 arguments and 3 values with this format
-> filter '<argument1> <value1> <argument2> <value2> <argument3> <value3>'
+**filter <argument1> <value1> <argument2> <value2> <argument3> <value3>**
 
 Example : 
 > filter -d D:\buat_bullion\test_coding\csv -s 2023-06-27T03:21:04+07:00 -e 2023-11-17T19:24:00+07:00

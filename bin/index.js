@@ -55,13 +55,6 @@ async function addHeaderToCSV(filePath, newRow) {
 const dirPath = options.dir;
 const startDate = options.start;
 const endDate = options.end;
-const csvDatas = [];
-const csvHeaders = ["TrxNo", "TrxDate", "TrxDetail", "Amount"];
-
-if (new Date(startDate) > new Date(endDate)) {
-  console.log("tanggal start harus lebih kecil daripada tanggal selesai");
-  return;
-}
 
 fs.readdir(dirPath, (err, files) => {
   if (err) {
@@ -69,7 +62,14 @@ fs.readdir(dirPath, (err, files) => {
     return;
   }
 
+  const csvDatas = [];
+  const csvHeaders = ["TrxNo", "TrxDate", "TrxDetail", "Amount"];
   let fileReaded = 0;
+
+  if (new Date(startDate) > new Date(endDate)) {
+    console.log("tanggal start harus lebih kecil daripada tanggal selesai");
+    return;
+  }
 
   files.forEach((file) => {
     const filePath = `${dirPath}/${file}`;
@@ -86,20 +86,9 @@ fs.readdir(dirPath, (err, files) => {
           })
           .on("end", () => {
             fileReaded++;
-            // console.log(`data ${file} berhasil dibaca`);
 
             if (fileReaded === files.length) {
               try {
-                // ----- boleh pake .filter atau harus for loop manual?
-                // const filteredDatas = csvDatas
-                //   .filter(
-                //     (data) =>
-                //       // ----- < atau <= ?
-                //       data.TrxDate >= new Date(startDate) &&
-                //       data.TrxDate <= new Date(endDate)
-                //   )
-                //   .sort((a, b) => a.TrxDate - b.TrxDate);
-
                 const filteredDatas = [];
                 for (let i = 0; i < csvDatas.length; i++) {
                   if (
@@ -110,9 +99,6 @@ fs.readdir(dirPath, (err, files) => {
                   }
                 }
 
-                // console.log("filtered csv datas:", filteredDatas);
-
-                // ----- output datenya RFC-3339 yang global atau yang local indo
                 filteredDatas.forEach((singelData) => {
                   const dateBeforeFormat = new Date(
                     singelData.TrxDate.toISOString()
